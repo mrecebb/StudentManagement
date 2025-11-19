@@ -1,3 +1,5 @@
+package informations;
+
 public class Student {
     private int id;
     private static int idCounter = 0;

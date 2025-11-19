@@ -1,35 +1,56 @@
+import enums.Process;
+import informations.Student;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class StudentService {
-    ArrayList<Student> students;
+    List<Student> students;
+    List<Process> processes;
+    Scanner scanner;
 
-    public StudentService(ArrayList<Student> students) {
+    public StudentService(ArrayList<Student> students, ArrayList<Process> processes, Scanner scanner) {
         this.students = students;
+        this.processes = processes;
+        this.scanner = scanner;
+
+        processes.add(Process.PRINT_BY_ID);
+        processes.add(Process.LIST_BELOW_80_POINTS);
+        processes.add(Process.LIST_ABOVE_80_POINTS);
+        processes.add(Process.LIST_STARTS_WITH_A);
     }
 
     public void start() {
-        Student student1 = new Student("Receb", 19, 78, 90);
-        Student student2 = new Student("Tural", 30, 98, 83);
-        Student student3 = new Student("Fuad", 22, 72, 63);
-        Student student4 = new Student("Vusal", 26, 67, 52);
-        Student student5 = new Student("Ruslan", 17, 77, 82);
-        ArrayList<Student> studentsNew = new ArrayList<>();
-        studentsNew.add(student1);
-        studentsNew.add(student2);
-        studentsNew.add(student3);
-        studentsNew.add(student4);
-        studentsNew.add(student5);
+        while (true) {
+            System.out.println("Select Process:");
+            printAllProcesses();
+            System.out.print("Select: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = scanner.nextInt();
+                    Student student = utill.Process.getCustomer(id, students);
+                    System.out.println(student);
+                    break;
+                case 2:
+                    List<Student> below80Points = utill.Process.getBelow80Points(students);
+                    below80Points.forEach(System.out::println);
+                    break;
+                case 3:
+                    List<Student> above80Points = utill.Process.getAbove80Points(students);
+                    above80Points.forEach(System.out::println);
+                    break;
+                case 4:
+                    List<Student> startsWithAStudents = utill.Process.getStudentsStartsWithA(students);
+                    startsWithAStudents.forEach(System.out::println);
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        }
 
-        System.out.println(studentsNew);
-
-        System.out.println(getCustomer(1));
-
-        List<Student> allStudents = getStudents();
-        System.out.println(allStudents);
-
-        List<Student> aGrades = getAGrades();
-        System.out.println(aGrades);
 
         // getCustomer(int id)
         // getList()
@@ -39,50 +60,9 @@ public class StudentService {
         // A ile baslayan telebeleri goster
     }
 
-
-    public Student getCustomer(int i) {
-        for (Student student : students) {
-            if(student.getId() == i) {
-                return student;
-            }
+    private void printAllProcesses() {
+        for (int i = 0; i < processes.size(); i++) {
+            System.out.println((i + 1) + ". " + processes.get(i).toString());
         }
-        return null;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public List<Student> getAGrades() {
-        for (Student student : students) {
-            int avarage = (student.getGradeEnd() + student.getGradeStart()) / 2;
-            if(avarage > 80) {
-                students.add(student);
-            }
-        }
-
-        return students;
-    }
-
-    public List<Student> getOtherGrades(List<Student> students) {
-        for (Student student : students) {
-            int avarage = (student.getGradeEnd() + student.getGradeStart()) / 2;
-            if(avarage <= 80) {
-                students.add(student);
-            }
-        }
-
-        return students;
-    }
-
-
-    public List<Student> getA_students(List<Student> students) {
-        for (Student student : students) {
-            if(student.getName().startsWith("A")) {
-                students.add(student);
-            }
-        }
-
-        return students;
     }
 }
